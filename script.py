@@ -1,6 +1,6 @@
 import os
 
-folder_path = "/path/to/folder"  # ana klasör yolunu belirleyin
+folder_path = "path/to/folder"  # ana klasör yolunu belirleyin
 delta_logs_file = "delta_logs.txt"  # delta_log klasörleri dosyasının adını belirleyin
 parquets_file = "parquets.txt"  # parquet klasörleri dosyasının adını belirleyin
 
@@ -20,3 +20,12 @@ with open(delta_logs_file, "w") as f:
 
 with open(parquets_file, "w") as f:
     f.write("\n".join(parquets))
+
+# SQL sorgularını hazırlayın ve ilgili dosyaya kaydedin
+with open(delta_logs_file, "r") as f:
+    delta_logs = f.readlines()
+
+with open("delta_logs.sql", "w") as f:
+    for delta_log in delta_logs:
+        table_name = os.path.basename(delta_log)
+        f.write(f"CREATE TABLE SHALLOW CLONE {table_name}\n")
